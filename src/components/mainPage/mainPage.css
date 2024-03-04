@@ -1,0 +1,34 @@
+.navBar {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    align-items: center;
+}
+
+
+.title {
+    color: whitesmoke;
+    font-family: Inter;
+    font-size: 19.91px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: 0.1px;
+    margin: 0rem;
+    padding: 1rem 0rem 0rem 0.5rem;
+}
+
+.appBar {
+    width: 100%;
+    background: #353B3C;
+    height: 100%;
+    padding: 0.5rem;
+    display: flex;
+    vertical-align: middle;
+}
+
+
+.fireImg {
+    width: 3rem;
+    height: 3rem;
+}
