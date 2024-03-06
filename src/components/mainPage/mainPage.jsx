@@ -1,4 +1,5 @@
 import ContainersConfig from "../containersConfig/containersConfig";
+import AlertsConfig from "../alertsConfig/alertsConfig";
 import { Box } from "@mui/system";
 import { Tab } from "@mui/material";
 import Tabs from '@mui/material/Tabs';
@@ -8,7 +9,7 @@ import { useState } from "react";
 function MainPage() {
 
     const pages = ['Containers', 'Alerts', 'System usage', 'Sites health']
-    const [currPage, setCurrPage] = useState(1);
+    const [currPage, setCurrPage] = useState(0);
 
     const handleSelect = (e, newValue) => {
         setCurrPage(newValue);
@@ -33,7 +34,7 @@ function MainPage() {
                 <ContainersConfig />
             </Box>}
             {pages[currPage] == 'Alerts' && <Box>
-                <ContainersConfig />
+                <AlertsConfig />
             </Box>}
         </div>
     );

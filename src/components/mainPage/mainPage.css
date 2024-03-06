@@ -1,7 +1,7 @@
 .navBar {
     display: flex;
     justify-content: center;
-    width: 100%;
+    width: 100vw;
     align-items: center;
 }
 
@@ -19,7 +19,6 @@
 }
 
 .appBar {
-    width: 100%;
     background: #353B3C;
     height: 100%;
     padding: 0.5rem;
