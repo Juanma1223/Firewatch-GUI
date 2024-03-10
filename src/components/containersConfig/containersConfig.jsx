@@ -1,8 +1,9 @@
 import "./containersConfig.css"
 import { Box } from "@mui/system";
 import { TextField, Paper, Switch, Divider, Button } from "@mui/material";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
+import { BASE_URL } from "../../service/constants";
 
 function ContainersConfig() {
 
@@ -11,6 +12,13 @@ function ContainersConfig() {
     const [restartContainers, setRestartContainers] = useState(false);
     const [sendAlerts, setSendAlerts] = useState(false);
 
+    useEffect(() => {
+        getContainersConf();
+        return () => {
+        }
+    }, [])
+
+
     const handleHostName = (e) => {
         setHost(e.target.value);
     }
@@ -18,7 +26,7 @@ function ContainersConfig() {
     const handleWatchAllContainers = (e) => {
         setWatchAll(e.target.checked);
     }
-    
+
     const handleRestartContainers = (e) => {
         setRestartContainers(e.target.checked);
     }
@@ -32,10 +40,7 @@ function ContainersConfig() {
         // const url = "https://lila.com.ar/firewatch"
         const splittedDomain = url.split("/");
         const domain = splittedDomain[0] + "//" + splittedDomain[2];
-        console.log(domain);
-        // const endpoint = domain + "/api/docker-firewatch/containers";
-        const endpoint = "http://localhost:4200/api/docker-firewatch/containers"
-        console.log(endpoint)
+        const endpoint = BASE_URL + "/api/docker-firewatch/containers"
         axios({
             url: endpoint,
             method: 'post',
@@ -58,14 +63,33 @@ function ContainersConfig() {
 
     }
 
+    const getContainersConf = () => {
+        axios.get(BASE_URL + "/api/docker-firewatch/containers", {
+            auth: {
+                username: 'lila',
+                password: 'manzanohistorico29'
+            }
+        })
+            .then(function (response) {
+                console.log(response);
+                setHost(response.data.data.hostMachine);
+                setWatchAll(response.data.data.watchAllContainers);
+                setRestartContainers(response.data.data.restartContainers)
+                setSendAlerts(response.data.data.sendAlert);
+            })
+            .catch(function (error) {
+                console.log(error);
+            })
+    }
+
     return (
         <>
             <div className="container">
                 <Paper elevation={10} className="card">
-                    <TextField label="Host machine" variant="standard" onChange={handleHostName}></TextField>
-                    <p>Watch all containers: <Switch onChange={handleWatchAllContainers}></Switch></p>
-                    <p>Restart stopped containers: <Switch onChange={handleRestartContainers}></Switch></p>
-                    <p>Send alerts: <Switch onChange={handleSendAlerts}></Switch></p>
+                    <TextField defaultValue="Host Name" label="Host machine" variant="standard" value={host} onChange={handleHostName}></TextField>
+                    <p>Watch all containers: <Switch checked={watchAll} onChange={handleWatchAllContainers}></Switch></p>
+                    <p>Restart stopped containers: <Switch checked={restartContainers} onChange={handleRestartContainers}></Switch></p>
+                    <p>Send alerts: <Switch checked={sendAlerts} onChange={handleSendAlerts}></Switch></p>
                     <Button onClick={updateContainersInfo}>Save configuration</Button>
                 </Paper>
             </div>
